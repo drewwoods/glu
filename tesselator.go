@@ -10,6 +10,7 @@ package glu
 // #else
 //   #include <GL/glu.h>
 // #endif
+// #include <stdlib.h>
 import "C"
 import (
 	"unsafe"
@@ -22,6 +23,8 @@ type Tesselator struct {
 	tess *C.GLUtesselator
 
 	polyData interface{}
+
+	cData []unsafe.Pointer
 
 	// vertData keeps references to the vertices specifed by TessVertex
 	// so that the garbage collector does not invalidate them.
@@ -60,6 +63,9 @@ func NewTess() (tess *Tesselator) {
 // do this automatically.
 func (tess *Tesselator) Delete() {
 	C.gluDeleteTess(tess.tess)
+	for _, ptr := range tess.cData {
+		C.free(ptr)
+	}
 	tess.tess = nil
 }
 
@@ -100,7 +106,15 @@ func (tess *Tesselator) Vertex(location [3]float64, data interface{}) {
 	tess.vertLocs = append(tess.vertLocs, location)
 	_location := unsafe.Pointer(&tess.vertLocs[len(tess.vertLocs)-1])
 
-	C.gluTessVertex(tess.tess, (*C.GLdouble)(_location), unsafe.Pointer(_data))
+	// Convert Go pointer to C pointer which is a requirement for cgo.
+	dataBytes := (*[unsafe.Sizeof(*_data)]byte)(unsafe.Pointer(_data))
+	dataSlice := dataBytes[:]
+	_dataC := C.CBytes(dataSlice)
+
+	// Keep track of C pointer so we can free it later.
+	tess.cData = append(tess.cData, _dataC)
+
+	C.gluTessVertex(tess.tess, (*C.GLdouble)(_location), _dataC)
 }
 
 // Set the normal of the plane onto which points are projected onto before tesselation.
