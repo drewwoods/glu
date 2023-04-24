@@ -89,6 +89,18 @@ func LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float64) 
 	)
 }
 
+func PickMatrix(x, y, delX, delY float64, view *[4]int32) {
+	v := (*C.GLint)(unsafe.Pointer(view))
+
+    C.gluPickMatrix(
+        C.GLdouble(x),
+        C.GLdouble(y),
+        C.GLdouble(delX),
+        C.GLdouble(delY),
+        v,
+    )
+}
+
 func UnProject(winX, winY, winZ float64, model, proj *[16]float64, view *[4]int32) (float64, float64, float64) {
 	var ox, oy, oz C.GLdouble
 
