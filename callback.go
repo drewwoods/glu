@@ -4,9 +4,13 @@
 
 package glu
 
+
+// #ifdef __APPLE__
+// #define GL_SILENCE_DEPRECATION
+// #endif
 //#include "callback.h"
 import "C"
-import "github.com/go-gl/gl"
+import "github.com/go-gl-legacy/gl"
 import "unsafe"
 
 // ===========================================================================

@@ -5,13 +5,17 @@
 package glu
 
 // #ifdef __APPLE__
+// #define GL_SILENCE_DEPRECATION
 //   #include <OpenGL/glu.h>
 // #else
 //   #include <GL/glu.h>
 // #endif
 import "C"
-import "github.com/go-gl/gl"
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/go-gl-legacy/gl"
+)
 
 // Opaque object used for book keeping on the go side.
 type Tesselator struct {

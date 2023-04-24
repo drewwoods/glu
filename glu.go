@@ -9,6 +9,7 @@ package glu
 // #cgo windows LDFLAGS: -lglu32
 //
 // #ifdef __APPLE__
+// #define GL_SILENCE_DEPRECATION
 //   #include <OpenGL/glu.h>
 // #else
 //   #include <GL/glu.h>
@@ -19,7 +20,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"github.com/go-gl/gl"
+	"github.com/go-gl-legacy/gl"
 )
 
 func ptr(v interface{}) unsafe.Pointer {
