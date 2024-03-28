@@ -4,7 +4,7 @@
 
 package glu
 
-// #cgo darwin LDFLAGS: -framework Carbon -framework OpenGL -framework GLUT
+// #cgo darwin LDFLAGS: -framework Carbon -framework OpenGL
 // #cgo linux LDFLAGS: -lGLU
 // #cgo windows LDFLAGS: -lglu32
 //
