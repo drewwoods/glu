@@ -4,18 +4,18 @@
 
 package glu
 
-
 // #ifdef __APPLE__
 // #define GL_SILENCE_DEPRECATION
 // #endif
 //#include "callback.h"
 import "C"
-import "github.com/go-gl-legacy/gl"
-import "unsafe"
+import (
+	"unsafe"
+)
 
 // ===========================================================================
 
-type TessBeginHandler func(tessType gl.GLenum, polygonData interface{})
+type TessBeginHandler func(tessType uint32, polygonData interface{})
 
 //export goTessBeginData
 func goTessBeginData(tessType C.GLenum, tessPtr unsafe.Pointer) {
@@ -23,7 +23,7 @@ func goTessBeginData(tessType C.GLenum, tessPtr unsafe.Pointer) {
 	if tess == nil || tess.beginData == nil {
 		return
 	}
-	tess.beginData(gl.GLenum(tessType), tess.polyData)
+	tess.beginData((uint32)(tessType), tess.polyData)
 }
 
 // ===========================================================================
@@ -55,7 +55,7 @@ func goTessEndData(tessPtr unsafe.Pointer) {
 
 // ===========================================================================
 
-type TessErrorHandler func(errorNumber gl.GLenum, polygonData interface{})
+type TessErrorHandler func(errorNumber uint32, polygonData interface{})
 
 //export goTessErrorData
 func goTessErrorData(errorNumber C.GLenum, tessPtr unsafe.Pointer) {
@@ -63,7 +63,7 @@ func goTessErrorData(errorNumber C.GLenum, tessPtr unsafe.Pointer) {
 	if tess == nil || tess.errorData == nil {
 		return
 	}
-	tess.errorData(gl.GLenum(errorNumber), tess.polyData)
+	tess.errorData(uint32(errorNumber), tess.polyData)
 }
 
 // ===========================================================================

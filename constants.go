@@ -4,16 +4,14 @@
 
 package glu
 
-import "github.com/go-gl-legacy/gl"
-
 const (
 	// TessCallback
-	TESS_BEGIN_DATA     gl.GLenum = 100106
-	TESS_VERTEX_DATA              = 100107
-	TESS_END_DATA                 = 100108
-	TESS_ERROR_DATA               = 100109
-	TESS_EDGE_FLAG_DATA           = 100110
-	TESS_COMBINE_DATA             = 100111
+	TESS_BEGIN_DATA     = 100106
+	TESS_VERTEX_DATA    = 100107
+	TESS_END_DATA       = 100108
+	TESS_ERROR_DATA     = 100109
+	TESS_EDGE_FLAG_DATA = 100110
+	TESS_COMBINE_DATA   = 100111
 
 	// TessProperty
 	TESS_WINDING_RULE  = 100140
