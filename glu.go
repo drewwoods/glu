@@ -21,6 +21,10 @@ import (
 	"unsafe"
 )
 
+type Float interface {
+	~float64 | ~float32
+}
+
 func ptr(v interface{}) unsafe.Pointer {
 
 	if v == nil {
@@ -73,7 +77,7 @@ func Perspective(fovy, aspect, zNear, zFar float64) {
 	)
 }
 
-func LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float64) {
+func LookAt[num Float](eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ num) {
 	C.gluLookAt(
 		C.GLdouble(eyeX),
 		C.GLdouble(eyeY),
