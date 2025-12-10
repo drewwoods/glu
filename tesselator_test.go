@@ -5,7 +5,6 @@
 package glu
 
 import (
-	"github.com/go-gl/gl"
 	"testing"
 )
 
@@ -171,7 +170,7 @@ func TestTesselatorStar(t *testing.T) {
 	tess.Delete()
 }
 
-func tessBeginDataHandler(tessType gl.GLenum, polygonData interface{}) {
+func tessBeginDataHandler(tessType uint32, polygonData interface{}) {
 	polygonDataPtr := polygonData.(*PolygonData)
 	polygonDataPtr.BeginCount += 1
 }
@@ -189,7 +188,7 @@ func tessEndDataHandler(polygonData interface{}) {
 	polygonDataPtr.EndCount += 1
 }
 
-func tessErrorDataHandler(errno gl.GLenum, polygonData interface{}) {
+func tessErrorDataHandler(errno uint32, polygonData interface{}) {
 	polygonDataPtr := polygonData.(*PolygonData)
 	polygonDataPtr.ErrorCount += 1
 }
@@ -221,7 +220,7 @@ func tessCombineDataHandler(coords [3]float64,
 	return &polygonDataPtr.Vertices[len(polygonDataPtr.Vertices)-1]
 }
 
-func tessBeginNilHandler(tessType gl.GLenum, polygonData interface{}) {
+func tessBeginNilHandler(tessType uint32, polygonData interface{}) {
 }
 
 func tessVertexNilHandler(vertexData interface{}, polygonData interface{}) {
@@ -230,7 +229,7 @@ func tessVertexNilHandler(vertexData interface{}, polygonData interface{}) {
 func tessEndNilHandler(polygonData interface{}) {
 }
 
-func tessErrorNilHandler(errno gl.GLenum, polygonData interface{}) {
+func tessErrorNilHandler(errno uint32, polygonData interface{}) {
 }
 
 func tessEdgeFlagNilHandler(flag bool, polygonData interface{}) {
