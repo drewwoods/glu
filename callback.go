@@ -13,7 +13,11 @@ import (
 	"unsafe"
 )
 
-// ===========================================================================
+// =============================================================================
+//
+// Section: Tesselator callbacks
+//
+// =============================================================================
 
 type TessBeginHandler func(tessType uint32, polygonData interface{})
 
@@ -122,6 +126,87 @@ func goTessCombineData(coords, vertexData, weight, outData, tessPtr unsafe.Point
 	tess.vertData = append(tess.vertData, outWrapper)
 	_outData := (**vertexDataWrapper)(outData)
 	*_outData = outWrapper
+}
+
+// =============================================================================
+//
+// Section: NURBS callbacks
+//
+// =============================================================================
+
+type NurbsBeginDataHandler func(tessType uint32, polygonData interface{})
+type NurbsVertexDataHandler func(vertexData []float32, polygonData interface{})
+type NurbsNormalDataHandler func(normalData []float32, polygonData interface{})
+type NurbsColorDataHandler func(colorData []float32, polygonData interface{})
+type NurbsTextureCoordDataHandler func(texCoordData []float32, polygonData interface{})
+type NurbsEndDataHandler func(polygonData interface{})
+type NurbsErrorHandler func(errorNumber uint32, polygonData interface{})
+
+//export goNurbsBeginData
+func goNurbsBeginData(tessType C.GLenum, nurbsPtr unsafe.Pointer) {
+	var nurbs *Nurbs = (*Nurbs)(nurbsPtr)
+	if nurbs == nil || nurbs.beginData == nil {
+		return
+	}
+	nurbs.beginData((uint32)(tessType), nurbs.polyData)
+}
+
+//export goNurbsVertexData
+func goNurbsVertexData(vertexDataPtr, nurbsPtr unsafe.Pointer) {
+	var nurbs *Nurbs = (*Nurbs)(nurbsPtr)
+	if nurbs == nil || nurbs.vertexData == nil {
+		return
+	}
+	var vertex []float32 = (*[3]float32)(vertexDataPtr)[:]
+	nurbs.vertexData(vertex, nurbs.polyData)
+}
+
+//export goNurbsNormalData
+func goNurbsNormalData(normalDataPtr, nurbsPtr unsafe.Pointer) {
+	var nurbs *Nurbs = (*Nurbs)(nurbsPtr)
+	if nurbs == nil || nurbs.normalData == nil {
+		return
+	}
+	var normal []float32 = (*[3]float32)(normalDataPtr)[:]
+	nurbs.normalData(normal, nurbs.polyData)
+}
+
+//export goNurbsColorData
+func goNurbsColorData(colorDataPtr, nurbsPtr unsafe.Pointer) {
+	var nurbs *Nurbs = (*Nurbs)(nurbsPtr)
+	if nurbs == nil || nurbs.colorData == nil {
+		return
+	}
+	var color []float32 = (*[4]float32)(colorDataPtr)[:]
+	nurbs.colorData(color, nurbs.polyData)
+}
+
+//export goNurbsTextureCoordData
+func goNurbsTextureCoordData(texCoordDataPtr, nurbsPtr unsafe.Pointer) {
+	var nurbs *Nurbs = (*Nurbs)(nurbsPtr)
+	if nurbs == nil || nurbs.textureCoordData == nil {
+		return
+	}
+	var texCoord []float32 = (*[4]float32)(texCoordDataPtr)[:]
+	nurbs.textureCoordData(texCoord, nurbs.polyData)
+}
+
+//export goNurbsEndData
+func goNurbsEndData(nurbsPtr unsafe.Pointer) {
+	var nurbs *Nurbs = (*Nurbs)(nurbsPtr)
+	if nurbs == nil || nurbs.endData == nil {
+		return
+	}
+	nurbs.endData(nurbs.polyData)
+}
+
+//export goNurbsErrorData
+func goNurbsErrorData(errorNumber C.GLenum, nurbsPtr unsafe.Pointer) {
+	var nurbs *Nurbs = (*Nurbs)(nurbsPtr)
+	if nurbs == nil || nurbs.errorData == nil {
+		return
+	}
+	nurbs.errorData(uint32(errorNumber), nurbs.polyData)
 }
 
 // =============================================================================

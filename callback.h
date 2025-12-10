@@ -33,4 +33,14 @@ extern void goTessCombineData(void *coords, void *vertex_data,
 
 void setGluTessCallback(GLUtesselator *tess, GLenum which);
 
+extern void goNurbsBeginData(GLenum type, void *polygon_data);
+extern void goNurbsVertexData(void *vertex_data, void *polygon_data);
+extern void goNurbsNormalData(void *normal_data, void *polygon_data);
+extern void goNurbsColorData(void *color_data, void *polygon_data);
+extern void goNurbsTextureCoordData(void *tex_coord_data, void *polygon_data);
+extern void goNurbsEndData(void *polygon_data);
+extern void goNurbsErrorData(GLenum errorNumber, void *polygon_data);
+
+void setGluNurbsCallback(GLUnurbs *nurbs, GLenum which);
+
 #endif // _CALLBACK_H_
